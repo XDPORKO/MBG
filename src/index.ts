@@ -1,10 +1,4 @@
-console.clear()
-const chalk = require("chalk")
-console.log(chalk.red.bold("\x1b[32m========================================\x1b[0m"))
-console.log(chalk.blue.bold("\x1b[36m        Baileys Mod Loaded              \x1b[0m"))
-console.log(chalk.green.bold("\x1b[35m        Initializing Socket...         \x1b[0m"))
-console.log(chalk.yellow.bold("\x1b[32m========================================\x1b[0m"))
-
+import chalk from 'chalk'
 import makeWASocket from './Socket/index'
 
 export * from '../WAProto/index.js'
@@ -18,3 +12,54 @@ export * from './WAUSync/index'
 export type WASocket = ReturnType<typeof makeWASocket>
 export { makeWASocket }
 export default makeWASocket
+
+// Fungsi center text
+function centerText(text) {
+  const width = process.stdout.columns || 80
+  const lines = text.split('\n')
+  return lines
+    .map(line => {
+      const pad = Math.max(0, Math.floor((width - line.length) / 2))
+      return ' '.repeat(pad) + line
+    })
+    .join('\n')
+}
+
+// ASCII kecil
+const logoSmall = `
+█████╗ ██╗ ██████╗ ██╗██╗   ██╗
+██╔══██╗██║██╔════╝ ██║╚██╗ ██╔╝
+███████║██║██║  ███╗██║ ╚████╔╝
+██╔══██║██║██║   ██║██║  ╚██╔╝
+██║  ██║██║╚██████╔╝██║   ██║
+╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝   ╚═╝
+`
+
+// Loading effect
+async function loadingEffect() {
+  const frames = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏']
+  let count = 0
+
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
+      process.stdout.write(
+        chalk.yellow(`\r${centerText(`Loading ${frames[count % frames.length]}`)}`)
+      )
+      count++
+      if (count >= 50) {
+        clearInterval(interval)
+        process.stdout.write('\r')
+        resolve()
+      }
+    }, 80)
+  })
+}
+
+async function startTerminal() {
+  await loadingEffect()
+
+  console.log(chalk.greenBright(centerText(logoSmall)))
+  console.log(chalk.cyan(centerText('Baileys Modded By Rapp.')))
+}
+
+startTerminal()
