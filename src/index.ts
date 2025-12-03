@@ -1,5 +1,5 @@
 console.clear()
-
+const chalk = require("chalk")
 console.log(chalk.red.bold("\x1b[32m========================================\x1b[0m"))
 console.log(chalk.blue.bold("\x1b[36m        Baileys Mod Loaded              \x1b[0m"))
 console.log(chalk.green.bold("\x1b[35m        Initializing Socket...         \x1b[0m"))
